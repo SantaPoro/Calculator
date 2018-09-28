@@ -1,9 +1,13 @@
 package calc;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static java.lang.Double.NaN;
 import static java.lang.Math.pow;
+
+import java.util.Arrays;
+import java.util.ArrayList;
 
 
 /*
@@ -32,7 +36,7 @@ class Calculator {
         if (expr.length() == 0) {
             return NaN;
         }
-        // TODO List<String> tokens = tokenize(expr);
+        List<String> tokens = tokenize(expr);
         // TODO List<String> postfix = infix2Postfix(tokens);
         // TODO double result = evalPostfix(postfix);
         return 0; // result;
@@ -40,6 +44,11 @@ class Calculator {
 
     // ------  Evaluate RPN expression -------------------
 
+
+    double evalPostfix(List<String> sList) {
+
+        return 0;
+    }
     // TODO Eval methods
 
     double applyOperator(String op, double d1, double d2) {
@@ -64,17 +73,28 @@ class Calculator {
     // ------- Infix 2 Postfix ------------------------
 
     // TODO Methods
-    String[] infix2Postfix (String s){
-        
+    List<String> infix2Postfix(List<String> inFix) {
+        Stack<String> stack = new Stack<>();
+        List<String> postFix;
+        for (String item : inFix){
+            if(true){ //if the char is an number
+                stack.push(item);
+            } else if (true) { //if token is an operator
+                stack = operatorFound(item, stack);
+            }
 
-        return new String[];
+        }
+
+        return new ArrayList<>();
     }
 
+    Stack<String> operatorFound (String item, Stack<String> stack ){
+        if (getPrecedence(stack.peek()) > getPrecedence(item)){
 
+        }
 
-
-
-
+        return stack;
+    }
 
 
     int getPrecedence(String op) {
@@ -107,6 +127,12 @@ class Calculator {
 
     // ---------- Tokenize -----------------------
 
+
+    List<String> tokenize(String s) {
+        s = s.replaceAll("([+*/^()\\-])", " $1 ").trim();
+
+        return Arrays.asList(s.split("\\s+"));
+    }
     // TODO Methods to tokenize
 
 }
