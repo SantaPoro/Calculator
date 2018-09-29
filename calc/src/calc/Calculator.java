@@ -74,13 +74,17 @@ class Calculator {
 
     // TODO Methods
     List<String> infix2Postfix(List<String> inFix) {
-        Stack<String> stack = new Stack<>();
-        List<String> postFix;
+        Stack<String> stack;
+        Stack<String> postFix = new Stack<>(); //should this instead be a list?
         for (String item : inFix){
             if(true){ //if the char is an number
-                stack.push(item);
+                postFix.push(item);
             } else if (true) { //if token is an operator
-                stack = operatorFound(item, stack);
+                stack = operatorFound(item, stack,postFix);
+            } else if (true) { //if token is (
+                stack.push(item);
+            } else if (true) { // if toekn is )
+                postFix = rightBracketFound(postFix, stack);
             }
 
         }
@@ -88,12 +92,20 @@ class Calculator {
         return new ArrayList<>();
     }
 
-    Stack<String> operatorFound (String item, Stack<String> stack ){
-        if (getPrecedence(stack.peek()) > getPrecedence(item)){
-
+    Stack<String> operatorFound (String item, Stack<String> stack, Stack<String> output ){
+        if (getPrecedence(stack.peek()) > getPrecedence(item) || getPrecedence(stack.peek()) > getPrecedence(item) && getAssociativity(stack.peek()) == Assoc.LEFT || !stack.peek().equals("(")){
+            output.push(stack.pop());
+        } else {
+            stack.push(item);
+        }
+        return stack;
+    }
+    Stack<String> rightBracketFound (Stack<String> output, Stack<String> operator){
+        while(!operator.peek().equals("(")){
+            output.push(operator.pop());
         }
 
-        return stack;
+        return operator;
     }
 
 
