@@ -74,17 +74,17 @@ class Calculator {
 
     // TODO Methods
     List<String> infix2Postfix(List<String> inFix) {
-        Stack<String> stack;
-        Stack<String> postFix = new Stack<>(); //should this instead be a list?
+        Stack<String> operatorStack = new Stack<>(); //should this be a q?
+        LinkedList<String> output = new LinkedList<>(); //should this instead be a list?
         for (String item : inFix){
-            if(true){ //if the char is an number
-                postFix.push(item);
-            } else if (true) { //if token is an operator
-                stack = operatorFound(item, stack,postFix);
-            } else if (true) { //if token is (
-                stack.push(item);
-            } else if (true) { // if toekn is )
-                postFix = rightBracketFound(postFix, stack);
+            if(item.matches("[0-9*]")){ //if the char is an number
+                output.addLast(item);
+            } else if (item.matches("[+*/^\\-]")) { //if token is an operator
+                operatorStack = operatorFound(item, operatorStack,output);
+            } else if (item.equals("(")) { //if token is (
+                operatorStack.push(item);
+            } else if (item.equals(")")) { // if token is )
+                operatorStack = rightBracketFound(output, operatorStack);
             }
 
         }
@@ -92,17 +92,17 @@ class Calculator {
         return new ArrayList<>();
     }
 
-    Stack<String> operatorFound (String item, Stack<String> stack, Stack<String> output ){
-        if (getPrecedence(stack.peek()) > getPrecedence(item) || getPrecedence(stack.peek()) > getPrecedence(item) && getAssociativity(stack.peek()) == Assoc.LEFT || !stack.peek().equals("(")){
+    Stack<String> operatorFound (String item, Stack<String> stack, LinkedList<String> output ){
+        if (!stack.empty() && getPrecedence(stack.peek()) > getPrecedence(item) || getPrecedence(stack.peek()) > getPrecedence(item) && getAssociativity(stack.peek()) == Assoc.LEFT || !stack.peek().equals("(")){
             output.push(stack.pop());
         } else {
             stack.push(item);
         }
         return stack;
     }
-    Stack<String> rightBracketFound (Stack<String> output, Stack<String> operator){
+    Stack<String> rightBracketFound (LinkedList<String> output, Stack<String> operator){
         while(!operator.peek().equals("(")){
-            output.push(operator.pop());
+            output.addLast(operator.pop());
         }
 
         return operator;
