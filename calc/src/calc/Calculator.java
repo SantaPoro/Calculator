@@ -77,7 +77,7 @@ class Calculator {
         Stack<String> operatorStack = new Stack<>(); //should this be a q?
         LinkedList<String> output = new LinkedList<>(); //should this instead be a list?
         for (String item : inFix){
-            if(item.matches("[0-9*]")){ //if the char is an number
+            if(item.matches("[0-9]*")){ //if the char is an number
                 output.addLast(item);
             } else if (item.matches("[+*/^\\-]")) { //if token is an operator
                 operatorStack = operatorFound(item, operatorStack,output);
@@ -86,18 +86,21 @@ class Calculator {
             } else if (item.equals(")")) { // if token is )
                 operatorStack = rightBracketFound(output, operatorStack);
             }
-
         }
 
         return new ArrayList<>();
     }
 
     Stack<String> operatorFound (String item, Stack<String> stack, LinkedList<String> output ){
-        if (!stack.empty() && getPrecedence(stack.peek()) > getPrecedence(item) || getPrecedence(stack.peek()) > getPrecedence(item) && getAssociativity(stack.peek()) == Assoc.LEFT || !stack.peek().equals("(")){
-            output.push(stack.pop());
-        } else {
-            stack.push(item);
+        if(stack.size() == 0)
+        {
+            System.out.println("hej:)");
         }
+        while (!stack.empty() && getPrecedence(stack.peek()) > getPrecedence(item) || getPrecedence(stack.peek()) > getPrecedence(item) && getAssociativity(stack.peek()) == Assoc.LEFT || !stack.peek().equals("(")){
+            output.push(stack.pop());
+        }
+        stack.push(item);
+
         return stack;
     }
     Stack<String> rightBracketFound (LinkedList<String> output, Stack<String> operator){

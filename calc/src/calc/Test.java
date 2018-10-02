@@ -31,13 +31,14 @@ class Test {
         // Uncomment line by line to test
 
         // Tokenization ---------------------------
-        t("1 + 10", "1 + 10");  // Arguments are input and expected output
+        /*t("1 + 10", "1 + 10");  // Arguments are input and expected output
         t("1+ 10", "1 + 10");   // Expected is in fact a list [ "1", "+", "10"]
         t("1 +10", "1 + 10");
         t("1+10", "1 + 10");
         t("(1+10) ", "( 1 + 10 )");  // List is [ "(", "1", "+", "10", ")" ]
         t("2 *( 1+10) ", "2 * ( 1 + 10 )");
         t("(1 +2) /2 *( 1+10) ", "( 1 + 2 ) / 2 * ( 1 + 10 )");
+        */
 
 
         // Infix to postfix -----------------------
