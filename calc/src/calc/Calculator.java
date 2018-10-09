@@ -37,7 +37,7 @@ class Calculator {
             return NaN;
         }
         List<String> tokens = tokenize(expr);
-        // TODO List<String> postfix = infix2Postfix(tokens);
+        List<String> postfix = infix2Postfix(tokens);
         // TODO double result = evalPostfix(postfix);
         return 0; // result;
     }
@@ -46,8 +46,22 @@ class Calculator {
 
 
     double evalPostfix(List<String> sList) {
+        Stack<Double> output = new Stack<Double>();
 
-        return 0;
+        for (String item : sList) {
+            if (item.matches("[0-9]*")) {
+                output.push(Double.parseDouble(item));
+            } else if (item.matches("[+*/^\\-]")) {
+                if(output.size() < 2){
+                    throw new IllegalArgumentException(MISSING_OPERAND);
+                }
+                output.push(applyOperator(item,output.pop(),output.pop()));
+            }
+        }
+        if (output.size() != 1){
+            throw new IllegalArgumentException(MISSING_OPERATOR);
+        }
+        return output.pop();
     }
     // TODO Eval methods
 
@@ -74,39 +88,52 @@ class Calculator {
 
     // TODO Methods
     List<String> infix2Postfix(List<String> inFix) {
-        Stack<String> operatorStack = new Stack<>(); //should this be a q?
-        LinkedList<String> output = new LinkedList<>(); //should this instead be a list?
-        for (String item : inFix){
-            if(item.matches("[0-9]*")){ //if the char is an number
+        Stack<String> operatorStack = new Stack<>();
+        LinkedList<String> output = new LinkedList<>();
+        for (String item : inFix) {
+            if (item.matches("[0-9]*")) { //if the char is an number
                 output.addLast(item);
             } else if (item.matches("[+*/^\\-]")) { //if token is an operator
-                operatorStack = operatorFound(item, operatorStack,output);
+                operatorStack = operatorFound(item, operatorStack, output);
             } else if (item.equals("(")) { //if token is (
                 operatorStack.push(item);
             } else if (item.equals(")")) { // if token is )
                 operatorStack = rightBracketFound(output, operatorStack);
             }
         }
+        while (operatorStack.size() != 0) {
+            output.addLast(operatorStack.pop());
+        }
 
-        return new ArrayList<>();
+        return output;
     }
 
-    Stack<String> operatorFound (String item, Stack<String> stack, LinkedList<String> output ){
-        if(stack.size() == 0)
-        {
-            System.out.println("hej:)");
-        }
-        while (!stack.empty() && getPrecedence(stack.peek()) > getPrecedence(item) || getPrecedence(stack.peek()) > getPrecedence(item) && getAssociativity(stack.peek()) == Assoc.LEFT || !stack.peek().equals("(")){
-            output.push(stack.pop());
+    Stack<String> operatorFound(String item, Stack<String> stack, LinkedList<String> output) {
+        while (!stack.empty() &&
+                !stack.peek().equals("(") &&
+                (
+                        getPrecedence(stack.peek()) > getPrecedence(item) ||
+                                (
+                                        getPrecedence(stack.peek()) == getPrecedence(item) &&
+                                                getAssociativity(stack.peek()) == Assoc.LEFT
+                                )
+                )
+        ) {
+            output.addLast(stack.pop());
         }
         stack.push(item);
 
         return stack;
     }
-    Stack<String> rightBracketFound (LinkedList<String> output, Stack<String> operator){
-        while(!operator.peek().equals("(")){
+
+    Stack<String> rightBracketFound(LinkedList<String> output, Stack<String> operator) {
+        while (!operator.empty() && !operator.peek().equals("(")) {
             output.addLast(operator.pop());
         }
+        if(operator.empty()){
+            throw new IllegalArgumentException(MISSING_OPERATOR);
+        }
+        operator.pop();
 
         return operator;
     }

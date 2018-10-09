@@ -31,14 +31,15 @@ class Test {
         // Uncomment line by line to test
 
         // Tokenization ---------------------------
-        /*t("1 + 10", "1 + 10");  // Arguments are input and expected output
+        t("1 + 10", "1 + 10");  // Arguments are input and expected output
         t("1+ 10", "1 + 10");   // Expected is in fact a list [ "1", "+", "10"]
         t("1 +10", "1 + 10");
         t("1+10", "1 + 10");
         t("(1+10) ", "( 1 + 10 )");  // List is [ "(", "1", "+", "10", ")" ]
         t("2 *( 1+10) ", "2 * ( 1 + 10 )");
         t("(1 +2) /2 *( 1+10) ", "( 1 + 2 ) / 2 * ( 1 + 10 )");
-        */
+        System.out.println("INFIX2POSTFIX");
+
 
 
         // Infix to postfix -----------------------
@@ -54,10 +55,11 @@ class Test {
         i2p("4^3*2", "4 3 ^ 2 *");
         i2p("(1+2)*3", "1 2 + 3 *");
         i2p("2^(1+1)", "2 1 1 + ^");
+        System.out.println("EVAL");
 
 
         // Evaluation ------------------------------
-        /*
+
         // A value
         e("123", 123);
 
@@ -121,7 +123,7 @@ class Test {
         } catch (IllegalArgumentException e) {
             out.println(e.getMessage().equals(Calculator.MISSING_OPERATOR));
         }
-        */
+
 
     }
 
